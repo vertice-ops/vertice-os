@@ -80,7 +80,7 @@ class Component extends DCLogic {
         h('div', { style: { position: 'absolute', bottom: 0, left: '50%', width: 220, marginLeft: -110, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, animation: a('vxFadeUp', 500, 2800) } },
           h('div', { style: { width: '100%', height: 2, borderRadius: 1, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' } },
             h('div', { style: { height: '100%', background: 'linear-gradient(90deg, #2563eb, #38bdf8)', transformOrigin: 'left', animation: `vxBar 900ms cubic-bezier(0.6, 0, 0.2, 1) 2850ms both` } })),
-          h('span', { style: { fontFamily: "'Geist Mono', monospace", fontSize: 11, letterSpacing: '0.24em', color: '#94a3b8' } }, 'INICIALIZANDO PAINEL'))),
+          h('span', { style: { fontFamily: "'Geist Mono', monospace", fontSize: 11, letterSpacing: '0.24em', color: '#94a3b8' } }, 'INICIALIZANDO PAINEL - teste'))),
       h('span', { style: { position: 'absolute', right: 32, bottom: 28, fontSize: 12, color: '#64748b', animation: a('vxFadeUp', 400, 800) } }, 'Clique para pular'));
   }
   renderVals() { return { show: this.state.show, overlay: this.state.show ? this.overlay() : null }; }
