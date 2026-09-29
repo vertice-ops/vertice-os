@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@keyframes vxGrid { from { opacity: 0; } to { opacity: 1; } }
+@keyframes vxScan { from { transform: translateY(-20vh); } to { transform: translateY(120vh); } }
+@keyframes vxDraw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes vxFill { from { fill-opacity: 0; } to { fill-opacity: 1; } }
+@keyframes vxPiece { from { opacity: 0; transform: translate(var(--dx), var(--dy)); filter: blur(10px); } to { opacity: 1; transform: translate(0, 0); filter: blur(0); } }
+@keyframes vxRing { 0% { transform: scale(0.4); opacity: 0; } 25% { opacity: 0.8; } 100% { transform: scale(2.6); opacity: 0; } }
+@keyframes vxSymOut { from { opacity: 1; transform: scale(1); filter: blur(0); } to { opacity: 0; transform: scale(0.78); filter: blur(8px); } }
+@keyframes vxWipe { from { clip-path: inset(0 100% 0 0); opacity: 0.4; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
+@keyframes vxEdge { 0% { left: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { left: 100%; opacity: 0; } }
+@keyframes vxBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes vxFadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes vxGlow { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@keyframes vxOut { from { opacity: 1; transform: scale(1); filter: blur(0); } to { opacity: 0; transform: scale(1.05); filter: blur(10px); } }
+</style>
+</helmet>
+<sc-if value="{{ show }}" hint-placeholder-val="{{ true }}">{{ overlay }}</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;sempre&quot;,&quot;primeira-visita&quot;,&quot;desligado&quot;],&quot;default&quot;:&quot;sempre&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+const L = 'M6.50126 143.26C7.18297 143.206 7.8661 143.174 8.54959 143.163C11.1551 143.14 12.8003 143.812 14.9252 145.205C25.9379 152.42 36.8915 159.988 47.8263 167.304L119.358 215.082C131.499 223.111 143.597 231.205 155.65 239.364C161.007 242.925 168.019 246.919 172.711 251.017C177.05 254.804 176.181 265.412 176.255 270.872C176.324 275.963 176.232 281.711 176.219 286.976L176.197 335.523L176.264 499.335L172.531 497.21C167.709 494.33 160.771 489.275 155.986 486.036L127.436 466.857C121.912 463.147 115.974 458.951 110.365 455.462C109.971 450.479 110.168 443.309 110.168 438.144L110.16 408.396L110.152 338.011C110.259 323.349 110.229 308.687 110.064 294.024C102.383 288.268 92.608 282.053 84.5737 276.596L32.8045 241.704C23.9105 235.752 14.7814 229.701 6.01488 223.541C4.65714 222.586 1.71895 219.842 1.0166 218.363C0.580389 217.444 0.321724 214.652 0.306781 213.536C0.138843 201.171 0.229209 188.775 0.30108 176.409C0.345555 168.717 0.140617 161.055 0.177265 153.375C0.184025 151.991 0.470446 150.184 0.933697 148.9C2.06265 145.769 3.68012 144.598 6.50126 143.26Z';
+const R = 'M250.107 237.574C249.514 237.968 248.503 238.626 247.266 239.429C242.827 242.316 235.49 247.087 234.224 248.276C231.015 250.016 227.873 252.69 227.169 256.324C225.881 262.982 226.068 271.815 226.233 279.613C226.284 281.983 226.332 284.258 226.336 286.346L226.247 324.602L226.108 499.744L229.617 497.174C230.303 496.838 232.488 495.317 233.978 494.281C234.441 493.959 234.836 493.683 235.099 493.504L246.524 485.805L292.212 454.807C292.35 450.742 292.272 446.305 292.196 441.921C292.149 439.254 292.103 436.605 292.106 434.072C292.23 418.054 292.219 402.035 292.081 386.017L292.177 294.299C294.633 291.751 307.08 283.51 313.022 279.576C313.929 278.976 314.688 278.473 315.233 278.109L371.107 240.623L388.164 229.159C388.743 228.769 389.32 228.383 389.895 227.998C392.899 225.989 395.845 224.02 398.607 221.645C401.749 218.939 402.432 215.357 402.528 211.299C402.686 204.795 402.571 198.307 402.456 191.808C402.392 188.219 402.329 184.626 402.311 181.026C402.296 178.019 402.331 174.969 402.366 171.904C402.445 165.035 402.525 158.083 402.041 151.339C401.77 149.155 400.98 146.31 399.369 144.779C396.789 142.332 391.801 142.878 389.043 144.687C375.775 153.385 362.607 162.247 349.464 171.126L286.441 213.323L250.107 237.574Z';
+const T = 'M200.397 0.522461C209.318 0.522461 220.622 10.1434 226.905 14.2751L289.839 56.0552L330.962 83.5077C337.662 87.9327 344.436 92.2509 351.097 96.7293C354.1 98.7484 357.911 101.018 358.676 104.838C359.444 108.688 357.491 111.242 354.466 113.333C346.657 118.734 338.761 124.013 330.884 129.316L281.762 162.236L232.068 195.569C225.485 199.954 208.608 211.675 199.933 211.675C191.258 211.675 172.154 198.476 167.798 195.59L124.239 166.384L68.8603 129.314C60.9686 123.987 52.9368 118.758 45.1469 113.287C43.4384 112.014 41.9469 110.646 41.4722 108.478C40.4216 103.678 42.1059 101.536 45.7849 99.0008C53.9288 93.389 62.1709 87.9936 70.3884 82.5177L123.971 47.0069L172.726 14.6065C178.624 10.7069 191.475 0.522461 200.397 0.522461Z';
+const KEY = 'vx-intro-seen';
+const TOTAL = 4300;
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const mode = (props && props.mode) ?? 'sempre';
+    let seen = false; try { seen = localStorage.getItem(KEY) === '1'; } catch (e) {}
+    let navSkip = false; try { navSkip = sessionStorage.getItem('vx-intro-skip') === '1'; sessionStorage.removeItem('vx-intro-skip'); } catch (e) {}
+    this.skipIntro = navSkip || mode === 'desligado' || (mode === 'primeira-visita' && seen);
+    this.state = { show: !this.skipIntro, leaving: false };
+  }
+  reveal() { document.documentElement.classList.add('vx-ready'); }
+  componentDidMount() {
+    if (this.skipIntro) { this.reveal(); return this.finish(true); }
+    try { localStorage.setItem(KEY, '1'); } catch (e) {}
+    this.t1 = setTimeout(() => this.leave(), TOTAL - 650);
+    this.t2 = setTimeout(() => this.finish(), TOTAL);
+  }
+  componentWillUnmount() { clearTimeout(this.t1); clearTimeout(this.t2); this.reveal(); }
+  leave() { this.reveal(); this.setState({ leaving: true }); }
+  finish(silent) { clearTimeout(this.t1); clearTimeout(this.t2); this.reveal(); if (!silent || this.state.show) this.setState({ show: false }); this.props.onDone && this.props.onDone(); }
+  skip = () => { if (!this.state.leaving) { clearTimeout(this.t1); clearTimeout(this.t2); this.leave(); this.t2 = setTimeout(() => this.finish(), 600); } };
+
+  overlay() {
+    const h = React.createElement;
+    const a = (name, dur, delay, extra = '') => `${name} ${dur}ms cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}ms both${extra}`;
+    const piece = (d, dx, dy, delay, key) => h('g', { key, style: { '--dx': dx, '--dy': dy, animation: a('vxPiece', 900, delay), transformBox: 'fill-box', transformOrigin: 'center' } },
+      h('path', { d, pathLength: 1, fill: 'none', stroke: '#38bdf8', strokeWidth: 3, strokeDasharray: 1, style: { animation: a('vxDraw', 1000, delay) } }),
+      h('path', { d, fill: '#ffffff', style: { fillOpacity: 0, animation: a('vxFill', 500, delay + 750) } }));
+    return h('div', { onClick: this.skip, key: 'ov', 'data-vx-keep': '', style: {
+        position: 'fixed', inset: 0, zIndex: 1000, background: 'radial-gradient(90% 70% at 50% 45%, #0f1c38 0%, #0a0f1c 55%, #05080f 100%)', overflow: 'hidden', cursor: 'pointer',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Geist', sans-serif",
+        animation: this.state.leaving ? 'vxOut 650ms cubic-bezier(0.6, 0, 0.8, 0.2) both' : 'none' } },
+      h('div', { style: { position: 'absolute', inset: 0, animation: a('vxGrid', 900, 0),
+        backgroundImage: 'linear-gradient(rgba(59,130,246,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.08) 1px, transparent 1px)', backgroundSize: '64px 64px',
+        WebkitMaskImage: 'radial-gradient(ellipse at center, #000 20%, transparent 70%)', maskImage: 'radial-gradient(ellipse at center, #000 20%, transparent 70%)' } }),
+      h('div', { style: { position: 'absolute', left: 0, right: 0, top: 0, height: '18vh', background: 'linear-gradient(180deg, transparent, rgba(56,189,248,0.10) 70%, rgba(56,189,248,0.35) 99%, transparent)', animation: `vxScan 1800ms linear 150ms both` } }),
+      h('div', { style: { position: 'relative', width: 'min(520px, 80vw)', height: 360, display: 'flex', alignItems: 'center', justifyContent: 'center' } },
+        h('div', { style: { position: 'absolute', width: 380, height: 380, borderRadius: '50%', background: 'radial-gradient(circle, rgba(37,99,235,0.35), transparent 65%)', animation: 'vxGlow 2400ms ease-in-out 600ms infinite both' } }),
+        h('div', { style: { position: 'absolute', width: 200, height: 200, borderRadius: '50%', border: '1.5px solid rgba(56,189,248,0.7)', animation: a('vxRing', 1300, 1250) } }),
+        h('div', { style: { position: 'absolute', width: 200, height: 200, borderRadius: '50%', border: '1px solid rgba(96,165,250,0.5)', animation: a('vxRing', 1500, 1450) } }),
+        h('svg', { viewBox: '0 0 403 500', style: { position: 'absolute', width: 150, height: 186, overflow: 'visible', filter: 'drop-shadow(0 0 18px rgba(56,189,248,0.55))', animation: a('vxSymOut', 550, 2050) } },
+          piece(T, '0px', '-90px', 200, 't'), piece(L, '-90px', '60px', 380, 'l'), piece(R, '90px', '60px', 540, 'r')),
+        h('div', { style: { position: 'absolute', width: 'min(440px, 76vw)', animation: a('vxWipe', 800, 2250) } },
+          h('img', { src: 'assets/vertice-logo.svg', alt: 'Vértice', style: { width: '100%', display: 'block', filter: 'drop-shadow(0 0 24px rgba(56,189,248,0.35))' } }),
+          h('span', { style: { position: 'absolute', top: '-10%', bottom: '-10%', width: 3, marginLeft: -1.5, background: 'linear-gradient(180deg, transparent, #7dd3fc, transparent)', boxShadow: '0 0 18px 4px rgba(56,189,248,0.6)', animation: a('vxEdge', 800, 2250) } })),
+        h('div', { style: { position: 'absolute', bottom: 0, left: '50%', width: 220, marginLeft: -110, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, animation: a('vxFadeUp', 500, 2800) } },
+          h('div', { style: { width: '100%', height: 2, borderRadius: 1, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' } },
+            h('div', { style: { height: '100%', background: 'linear-gradient(90deg, #2563eb, #38bdf8)', transformOrigin: 'left', animation: `vxBar 900ms cubic-bezier(0.6, 0, 0.2, 1) 2850ms both` } })),
+          h('span', { style: { fontFamily: "'Geist Mono', monospace", fontSize: 11, letterSpacing: '0.24em', color: '#94a3b8' } }, 'INICIALIZANDO PAINEL'))),
+      h('span', { style: { position: 'absolute', right: 32, bottom: 28, fontSize: 12, color: '#64748b', animation: a('vxFadeUp', 400, 800) } }, 'Clique para pular'));
+  }
+  renderVals() { return { show: this.state.show, overlay: this.state.show ? this.overlay() : null }; }
+}
+</script>
+</body>
+</html>

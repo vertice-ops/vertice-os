@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+</helmet>
+<div style="position: relative; width: 100%; min-width: 0; font-family: 'Geist', sans-serif;">
+  <div style="display: flex; align-items: center; gap: 10px; width: 100%; min-width: 0; box-sizing: border-box; background: #ffffff; border-radius: 10px; padding: 0 12px 0 14px;">
+    <i class="ph ph-magnifying-glass" style="font-size: 18px; color: #64748b; flex: none;"></i>
+    <input ref="{{ inputRef }}" value="{{ q }}" onChange="{{ onQ }}" onKeyDown="{{ onKey }}" onFocus="{{ onFocus }}" onBlur="{{ onBlur }}" placeholder="Buscar licitações, contratos, clientes..." role="combobox" aria-expanded="{{ open }}" aria-controls="vx-search-list" aria-autocomplete="list" aria-label="Busca global" style="flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-family: inherit; font-size: 14px; color: #0f172a; padding: 11px 0; text-overflow: ellipsis;">
+    <sc-if value="{{ hasQ }}" hint-placeholder-val="{{ false }}">
+      <button onMouseDown="{{ clear }}" aria-label="Limpar busca" style="cursor: pointer; flex: none; background: transparent; border: none; padding: 4px; color: #64748b; display: flex;"><i class="ph ph-x" style="font-size: 16px;"></i></button>
+    </sc-if>
+    <sc-if value="{{ noQ }}" hint-placeholder-val="{{ true }}">
+      <span style="flex: none; font-family: 'Geist Mono', monospace; font-size: 11px; color: #64748b; border: 1px solid #e2e8f0; border-radius: 6px; padding: 3px 6px; white-space: nowrap;">{{ shortcut }}</span>
+    </sc-if>
+  </div>
+  <sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+    <div id="vx-search-list" role="listbox" style="position: absolute; top: calc(100% + 8px); left: 0; right: 0; min-width: 320px; z-index: 60; background: #0d1426; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; box-shadow: 0 24px 60px rgba(0,0,0,0.55); padding: 8px; max-height: min(480px, 70vh); overflow-y: auto; box-sizing: border-box; color: #ffffff;">
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+        <div style="padding: 10px 10px 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.16em; color: #64748b;">{{ g.label }}</div>
+        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+          <a href="{{ it.href }}" role="option" aria-selected="{{ it.sel }}" onMouseEnter="{{ it.hover }}" onMouseDown="{{ it.go }}" style="display: flex; align-items: center; gap: 12px; padding: 9px 10px; border-radius: 10px; text-decoration: none; color: #ffffff; background: {{ it.bg }};">
+            <span style="width: 32px; height: 32px; flex: none; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;"><i class="{{ it.icon }}" style="font-size: 17px; color: #60a5fa;"></i></span>
+            <span style="display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0;">
+              <span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ it.title }}</span>
+              <span style="font-size: 12px; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ it.sub }}</span>
+            </span>
+            <i class="ph ph-arrow-right" style="font-size: 14px; color: #64748b; flex: none;"></i>
+          </a>
+        </sc-for>
+      </sc-for>
+      <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding: 20px 10px; font-size: 13px; color: #94a3b8;">Nada encontrado para “{{ q }}”.</div>
+      </sc-if>
+      <div style="display: flex; gap: 16px; padding: 10px 10px 4px; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 11px; color: #64748b;"><span>↑ ↓ navegar</span><span>Enter abrir</span><span>Esc fechar</span></div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:560,&quot;height&quot;:480}}">
+const LIC = 'Licitacoes.dc.html', CON = 'Obras%20e%20Contratos.dc.html', CLI = 'Clientes.dc.html', EQP = 'Equipes%20e%20Profissionais.dc.html', FIN = 'Financeiro.dc.html', ESP = 'Banco%20de%20Especialistas.dc.html';
+const T = { page: ['MÓDULOS', 'ph ph-squares-four'], lic: ['LICITAÇÕES', 'ph ph-gavel'], con: ['CONTRATOS', 'ph ph-hard-hat'], cli: ['CLIENTES', 'ph ph-buildings'], pro: ['PROFISSIONAIS', 'ph ph-user'], nf: ['NOTAS FISCAIS', 'ph ph-receipt'] };
+const q = (base, v) => base + '?q=' + encodeURIComponent(v);
+const IDX = [
+  ...[['Dashboard', 'Visão geral e operações', 'Dashboard.dc.html'], ['Processar edital', 'Intelligence Hub · leitura de PDFs', 'Intelligence%20Hub.dc.html'], ['Go/No-Go', 'Análise de viabilidade do edital', 'Score%20Go-No-Go.dc.html'], ['Propostas', 'Gerador de propostas', 'Gerador%20de%20Propostas.dc.html'], ['Biblioteca', 'Documentos e certidões', 'Biblioteca%20Documental.dc.html'], ['Especialistas', 'Banco de especialistas externos', ESP], ['Financeiro', 'Faturamento e recebíveis', FIN], ['Configurações', 'Organização, usuários e preferências', 'Configuracoes.dc.html']].map(([t, s, h]) => ['page', t, s, h]),
+  ...[['PE 042/2026', 'Petrobras S.A.', 'Rio de Janeiro - RJ'], ['CC 018/2026', 'Prefeitura Municipal de Santos', 'Santos - SP'], ['TP 009/2026', 'Departamento de Estradas de Rodagem', 'Belo Horizonte - MG'], ['PE 031/2026', 'Companhia Docas do Estado', 'Vitória - ES'], ['CC 005/2026', 'Secretaria de Infraestrutura Estadual', 'São Paulo - SP'], ['PE 050/2026', 'Eletrobras', 'Brasília - DF'], ['CC 022/2026', 'Sabesp', 'São Paulo - SP']].map(([e, o, c]) => ['lic', e, o + ' · ' + c, q(LIC, e)]),
+  ...[['CTR-2026/014', 'Petrobras S.A.'], ['CTR-2026/012', 'Prefeitura de Santos'], ['CTR-2026/009', 'DER - SP'], ['CTR-2026/016', 'Ministério da Infraestrutura'], ['CTR-2026/007', 'Companhia Docas do Estado'], ['CTR-2025/031', 'Secretaria de Infraestrutura Estadual']].map(([c, cl]) => ['con', c, cl, q(CON, c)]),
+  ...[['Petrobras S.A.', 'Empresa Pública · Rio de Janeiro - RJ'], ['Prefeitura Municipal de Santos', 'Prefeitura · Santos - SP'], ['Departamento de Estradas de Rodagem', 'Autarquia Estadual · São Paulo - SP'], ['Ministério da Infraestrutura', 'Administração Direta · Brasília - DF'], ['Companhia Docas do Estado', 'Sociedade de Economia Mista · Vitória - ES'], ['Prefeitura Municipal de Sorocaba', 'Prefeitura · Sorocaba - SP']].map(([n, s]) => ['cli', n, s, q(CLI, n)]),
+  ...[['Vinicius Duque', 'Engenharia Civil'], ['Maria Siqueira', 'Infraestrutura & Redes'], ['Carlos Joe', 'Jurídico & Licitações'], ['Wagner Mattos', 'Engenharia Civil'], ['Sandra Hill', 'Infraestrutura & Redes'], ['Renata Queiroz', 'Segurança do Trabalho'], ['Paulo Andrade', 'TI & Sistemas'], ['Helena Rocha', 'Orçamento & Custos']].map(([n, s]) => ['pro', n, 'Equipe · ' + s, q(EQP, n)]),
+  ...[['Ana Beatriz Souza', 'Engenheiro Civil · Campinas'], ['Carlos Menezes', 'Eletricista · São Paulo'], ['Fernanda Lopes', 'Topógrafo · Sorocaba'], ['Thiago Nogueira', 'Engenheiro Civil · São Paulo']].map(([n, s]) => ['pro', n, 'Especialista · ' + s, q(ESP, n)]),
+  ...[['NF-2026/089', 'Petrobras S.A. · R$ 530 mil'], ['NF-2026/088', 'Prefeitura de Santos · R$ 180 mil'], ['NF-2026/087', 'DER - SP · R$ 410 mil'], ['NF-2026/086', 'Petrobras S.A. · R$ 495 mil'], ['NF-2026/084', 'Companhia Docas do Estado · R$ 212 mil'], ['NF-2026/081', 'Secretaria de Infraestrutura · R$ 1,12 mi']].map(([n, s]) => ['nf', n, s, q(FIN, n)]),
+];
+const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const HAY = IDX.map(r => norm(r[1] + ' ' + r[2]));
+const comboOf = e => [e.metaKey && '⌘', e.ctrlKey && 'Ctrl', e.altKey && 'Alt', e.shiftKey && 'Shift', e.key.length === 1 ? e.key.toUpperCase() : e.key].filter(Boolean).join(' ');
+class Component extends DCLogic {
+  state = { q: '', focus: false, sel: 0, shortcut: '⌘ K' };
+  inputRef = React.createRef();
+  componentDidMount() {
+    try { const p = JSON.parse(localStorage.getItem('vx-prefs') || '{}'); if (p.atalho) this.setState({ shortcut: p.atalho }); } catch (e) {}
+    this._k = e => {
+      const c = comboOf(e), s = this.state.shortcut;
+      if (c === s || (s === '⌘ K' && c === 'Ctrl K')) { e.preventDefault(); this.inputRef.current && this.inputRef.current.focus(); }
+    };
+    window.addEventListener('keydown', this._k);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._k); clearTimeout(this._b); }
+  results() {
+    const t = norm(this.state.q.trim()); if (!t) return [];
+    const words = t.split(/\s+/);
+    const out = [];
+    IDX.forEach((r, i) => { if (words.every(w => HAY[i].includes(w))) out.push({ r, score: (norm(r[1]).startsWith(t) ? 0 : 1) }); });
+    const byType = {};
+    out.sort((a, b) => a.score - b.score).forEach(({ r }) => { (byType[r[0]] = byType[r[0]] || []).length < 4 && byType[r[0]].push(r); });
+    return Object.keys(T).filter(k => byType[k]).flatMap(k => byType[k]);
+  }
+  go(href) { location.href = href; }
+  renderVals() {
+    const s = this.state, list = this.results(), sel = Math.min(s.sel, Math.max(list.length - 1, 0));
+    const open = s.focus && !!s.q.trim();
+    const groups = [];
+    list.forEach((r, i) => {
+      let g = groups[groups.length - 1];
+      if (!g || g.k !== r[0]) { g = { k: r[0], label: T[r[0]][0], items: [] }; groups.push(g); }
+      g.items.push({ title: r[1], sub: r[2], href: r[3], icon: T[r[0]][1], sel: i === sel, bg: i === sel ? 'rgba(37,99,235,0.18)' : 'transparent', hover: () => this.setState({ sel: i }), go: e => { e.preventDefault(); this.go(r[3]); } });
+    });
+    return {
+      inputRef: this.inputRef, q: s.q, hasQ: !!s.q, noQ: !s.q, shortcut: s.shortcut, open, groups, empty: open && !list.length,
+      onQ: e => this.setState({ q: e.target.value, sel: 0 }),
+      onFocus: () => { clearTimeout(this._b); this.setState({ focus: true }); },
+      onBlur: () => { this._b = setTimeout(() => this.setState({ focus: false }), 120); },
+      clear: e => { e.preventDefault(); this.setState({ q: '', sel: 0 }); },
+      onKey: e => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); this.setState({ sel: Math.min(sel + 1, list.length - 1) }); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); this.setState({ sel: Math.max(sel - 1, 0) }); }
+        else if (e.key === 'Enter' && list[sel]) { e.preventDefault(); this.go(list[sel][3]); }
+        else if (e.key === 'Escape') { if (s.q) this.setState({ q: '' }); else e.currentTarget.blur(); }
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

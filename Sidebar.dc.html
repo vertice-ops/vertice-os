@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>
+[data-vx-scroll] { scrollbar-width: thin; scrollbar-color: transparent transparent; transition: scrollbar-color 0.3s; }
+[data-vx-scroll][data-scrolling] { scrollbar-color: rgba(148,163,184,0.22) transparent; }
+[data-vx-scroll]::-webkit-scrollbar { width: 6px; }
+[data-vx-scroll]::-webkit-scrollbar-track { background: transparent; }
+[data-vx-scroll]::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; }
+[data-vx-scroll][data-scrolling]::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.22); }
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="position: relative; height: 100vh; width: {{ width }}; transition: width 0.22s ease; font-family: 'Geist', sans-serif; color: #ffffff;">
+  <aside data-vx-keep="" data-vx-scroll="" onScroll="{{ onAsideScroll }}" style="background: #0d1426; border-right: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; height: 100%; box-sizing: border-box; overflow-y: auto; overflow-x: hidden;">
+    <div style="height: 104px; flex: none; display: flex; align-items: center; justify-content: {{ logoJustify }}; padding: {{ logoPad }}; border-bottom: 1px solid rgba(255,255,255,0.06); box-sizing: border-box;">
+      <a href="Dashboard.dc.html" onClick="{{ goHome }}" title="Início" style="display: flex; align-items: center; width: 100%; justify-content: {{ logoJustify }}; cursor: pointer; transition: opacity 0.15s;" style-hover="opacity: 0.8;">
+        <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+          <img src="assets/vertice-logo.svg" alt="Vértice Operations &amp; Solutions" style="width: 100%; max-height: 56px; object-fit: contain; object-position: left center; display: block;">
+        </sc-if>
+        <sc-if value="{{ collapsed }}" hint-placeholder-val="{{ false }}">
+          <img src="assets/vertice-symbol.svg" alt="Vértice" style="height: 40px; width: auto; display: block;">
+        </sc-if>
+      </a>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: {{ groupGap }}; padding: 24px 14px;">
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+        <nav style="display: flex; flex-direction: column; gap: 2px;">
+          <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+            <span style="padding: 0 14px 6px; font-size: 10px; font-weight: 600; letter-spacing: 0.18em; color: #64748b; white-space: nowrap;">{{ g.title }}</span>
+          </sc-if>
+          <sc-if value="{{ collapsed }}" hint-placeholder-val="{{ false }}">
+            <span style="height: 1px; margin: 0 10px 8px; background: rgba(255,255,255,0.06);"></span>
+          </sc-if>
+          <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+            <a href="{{ it.href }}" onClick="{{ it.onClick }}" title="{{ it.label }}" style="text-decoration: none; display: flex; align-items: center; justify-content: {{ itemJustify }}; gap: 12px; font-size: 14px; padding: 9px 12px; border-radius: 10px; white-space: nowrap; overflow: hidden; color: {{ it.color }}; background: {{ it.bg }}; font-weight: {{ it.weight }};" style-hover="background: rgba(255,255,254,0.05); color: #f8fafc;">
+              <i class="{{ it.icon }}" style="font-size: 20px; flex: none; color: {{ it.iconColor }};"></i>
+              <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span>{{ it.label }}</span></sc-if>
+            </a>
+          </sc-for>
+        </nav>
+      </sc-for>
+    </div>
+    <a href="#perfil" title="Meu perfil" style="margin-top: auto; padding: 18px {{ footPadX }}; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: {{ itemJustify }}; gap: 12px; text-decoration: none; color: #ffffff; cursor: pointer;" style-hover="background: rgba(255,255,254,0.04); color: #f8fafc;">
+      <sc-if value="{{ pHasPhoto }}" hint-placeholder-val="{{ false }}">
+        <img src="{{ pFoto }}" alt="" style="width: 36px; height: 36px; flex: none; border-radius: 50%; object-fit: cover; display: block;">
+      </sc-if>
+      <sc-if value="{{ pNoPhoto }}" hint-placeholder-val="{{ true }}">
+        <span style="width: 36px; height: 36px; flex: none; border-radius: 50%; background: {{ pCor }}; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">{{ pIni }}</span>
+      </sc-if>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+          <span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ pNome }}</span>
+          <span style="font-size: 10px; letter-spacing: 0.12em; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ pCargoUp }}</span>
+        </span>
+      </sc-if>
+    </a>
+  </aside>
+  <button data-vx-keep="" onClick="{{ toggle }}" title="{{ toggleLabel }}" aria-label="{{ toggleLabel }}" style="position: absolute; top: 50%; right: -16px; transform: translateY(-50%); z-index: 30; width: 16px; height: 64px; padding: 0; cursor: pointer; background: #13203c; border: 1px solid rgba(96,165,250,0.35); border-left: none; border-radius: 0 10px 10px 0; color: #cbd5e1; display: flex; align-items: center; justify-content: center;" style-hover="background: #1d3a78; color: #f8fafc;">
+    <i class="{{ chevron }}" style="font-size: 12px;"></i>
+  </button>
+
+  <sc-if value="{{ pOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeP }}" style="position: fixed; inset: 0; background: rgba(3,6,14,0.65); z-index: 100;"></div>
+    <div role="dialog" aria-label="Meu perfil" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); width: min(640px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow-y: auto; z-index: 101; background: #0d1426; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; box-shadow: 0 40px 120px rgba(0,0,0,0.6); padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px; white-space: normal;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 12px; letter-spacing: 0.16em; color: #94a3b8;">MEU PERFIL</span>
+        <button onClick="{{ closeP }}" style="cursor: pointer; font-family: inherit; font-size: 13px; color: #cbd5e1; background: transparent; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 6px 12px;">Fechar</button>
+      </div>
+      <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+        <sc-if value="{{ dHasPhoto }}" hint-placeholder-val="{{ false }}">
+          <img src="{{ dFoto }}" alt="" style="width: 84px; height: 84px; flex: none; border-radius: 50%; object-fit: cover; display: block;">
+        </sc-if>
+        <sc-if value="{{ dNoPhoto }}" hint-placeholder-val="{{ true }}">
+          <span style="width: 84px; height: 84px; flex: none; border-radius: 50%; background: {{ dCor }}; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 600; letter-spacing: -0.01em;">{{ dIni }}</span>
+        </sc-if>
+        <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-size: 24px; font-weight: 600; letter-spacing: -0.02em;">{{ dNome }}</span>
+            <span style="font-size: 14px; color: #94a3b8;">{{ dCargo }}</span>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <label style="cursor: pointer; font-size: 13px; font-weight: 600; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; padding: 7px 12px; display: flex; align-items: center; gap: 6px;"><i class="ph ph-camera" style="font-size: 15px;"></i>Trocar foto<input type="file" accept="image/*" onChange="{{ onPhoto }}" style="display: none;"></label>
+            <sc-if value="{{ dHasPhoto }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ adjustPhoto }}" style="cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; color: #e2e8f0; background: transparent; border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; padding: 7px 12px; display: flex; align-items: center; gap: 6px;"><i class="ph ph-crop" style="font-size: 15px;"></i>Ajustar</button>
+              <button onClick="{{ removePhoto }}" style="cursor: pointer; font-family: inherit; font-size: 13px; color: #fca5a5; background: transparent; border: 1px solid rgba(248,113,113,0.3); border-radius: 8px; padding: 7px 12px;">Remover</button>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+      <sc-if value="{{ cropping }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; background: #0a1122; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 20px;">
+          <span style="align-self: flex-start; font-size: 11px; letter-spacing: 0.14em; color: #cbd5e1;">AJUSTAR FOTO</span>
+          <div onPointerDown="{{ cDown }}" onPointerMove="{{ cMove }}" onPointerUp="{{ cUp }}" onPointerCancel="{{ cUp }}" onWheel="{{ cWheel }}" style="position: relative; width: 260px; height: 260px; flex: none; overflow: hidden; border-radius: 16px; background: #05080f; cursor: grab; touch-action: none; user-select: none;">
+            <img src="{{ cSrc }}" alt="" draggable="false" style="position: absolute; left: 50%; top: 50%; width: {{ cW }}; height: {{ cH }}; max-width: none; transform: {{ cT }}; pointer-events: none;">
+            <div style="position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 999px rgba(5,8,15,0.62); border: 2px solid rgba(56,189,248,0.85); pointer-events: none;"></div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; width: 100%; max-width: 320px;">
+            <button onClick="{{ cZoomOut }}" aria-label="Diminuir zoom" style="cursor: pointer; background: transparent; border: none; padding: 4px; color: #94a3b8; display: flex;"><i class="ph ph-magnifying-glass-minus" style="font-size: 18px;"></i></button>
+            <input type="range" min="1" max="3" step="0.01" value="{{ cZoom }}" onChange="{{ cOnZoom }}" aria-label="Zoom" style="flex: 1; accent-color: #38bdf8;">
+            <button onClick="{{ cZoomIn }}" aria-label="Aumentar zoom" style="cursor: pointer; background: transparent; border: none; padding: 4px; color: #94a3b8; display: flex;"><i class="ph ph-magnifying-glass-plus" style="font-size: 18px;"></i></button>
+            <span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #94a3b8; width: 40px; text-align: right;">{{ cZoomLabel }}</span>
+          </div>
+          <span style="font-size: 12px; color: #94a3b8; text-align: center;">Arraste a imagem para posicionar. Use o controle ou a rolagem do mouse para ampliar.</span>
+          <div style="display: flex; gap: 10px; width: 100%;">
+            <button onClick="{{ cApply }}" style="flex: 1; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; color: #ffffff; background: #2563eb; border: none; border-radius: 10px; padding: 11px;" style-hover="background: #1d4ed8;">Aplicar recorte</button>
+            <button onClick="{{ cReset }}" style="cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; color: #cbd5e1; background: transparent; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px;">Centralizar</button>
+            <button onClick="{{ cCancel }}" style="cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; color: #cbd5e1; background: transparent; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px;">Cancelar</button>
+          </div>
+        </div>
+      </sc-if>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-size: 11px; letter-spacing: 0.14em; color: #cbd5e1;">COR DO AVATAR</span>
+        <div style="display: flex; gap: 10px;">
+          <sc-for list="{{ cores }}" as="c" hint-placeholder-count="5">
+            <button onClick="{{ c.pick }}" aria-label="Cor do avatar" style="cursor: pointer; width: 30px; height: 30px; border-radius: 50%; padding: 0; background: {{ c.v }}; border: 2px solid {{ c.ring }};"></button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+        <sc-for list="{{ pFields }}" as="f" hint-placeholder-count="6">
+          <label style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 11px; letter-spacing: 0.14em; color: #cbd5e1;">{{ f.label }}</span>
+            <input value="{{ f.value }}" placeholder="{{ f.ph }}" onChange="{{ f.onChange }}" style="font-family: inherit; font-size: 14px; color: #ffffff; background: #0a1122; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 11px 14px; outline: none;" style-focus="border-color: #3b82f6;">
+          </label>
+        </sc-for>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <span style="font-size: 11px; letter-spacing: 0.14em; color: #cbd5e1; padding-bottom: 6px;">NOTIFICAÇÕES</span>
+        <sc-for list="{{ pToggles }}" as="t" hint-placeholder-count="3">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+            <div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 14px; font-weight: 600;">{{ t.t }}</span><span style="font-size: 13px; color: #94a3b8;">{{ t.d }}</span></div>
+            <button onClick="{{ t.toggle }}" role="switch" aria-checked="{{ t.on }}" style="cursor: pointer; flex: none; width: 44px; height: 24px; border-radius: 999px; border: none; padding: 3px; background: {{ t.track }}; transition: background 0.15s; display: flex;"><span style="width: 18px; height: 18px; border-radius: 50%; background: #ffffff; transform: translateX({{ t.knob }}); transition: transform 0.15s;"></span></button>
+          </div>
+        </sc-for>
+      </div>
+      <a href="Configuracoes.dc.html?tab=preferencias" style="text-decoration: none; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #ffffff; background: #0a1122; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px 14px;" style-hover="border-color: rgba(56,189,248,0.45); color: #ffffff;"><span>Preferências da interface</span><i class="ph ph-arrow-right" style="color: #38bdf8;"></i></a>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button onClick="{{ saveP }}" style="flex: 1; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; color: #ffffff; background: #2563eb; border: none; border-radius: 10px; padding: 12px;" style-hover="background: #1d4ed8;">Salvar perfil</button>
+        <button onClick="{{ closeP }}" style="cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; color: #cbd5e1; background: transparent; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 18px;">Cancelar</button>
+      </div>
+      <span style="font-size: 13px; color: #fca5a5;">{{ pErr }}</span>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ nOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeN }}" style="position: fixed; inset: 0; background: rgba(3,6,14,0.6); z-index: 100;"></div>
+    <aside role="dialog" aria-label="Notificações" style="position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100vw); background: #0d1426; border-left: 1px solid rgba(255,255,255,0.08); z-index: 101; overflow-y: auto; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; box-shadow: -30px 0 80px rgba(0,0,0,0.5); white-space: normal;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-size: 12px; letter-spacing: 0.16em; color: #94a3b8;">NOTIFICAÇÕES</span>
+          <span style="font-size: 24px; font-weight: 600; letter-spacing: -0.02em;">{{ nTitle }}</span>
+        </div>
+        <button onClick="{{ closeN }}" style="cursor: pointer; font-family: inherit; font-size: 13px; color: #cbd5e1; background: transparent; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 6px 12px;">Fechar</button>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <div style="display: flex; gap: 4px; background: #0a1122; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 4px;">
+          <sc-for list="{{ nTabs }}" as="o" hint-placeholder-count="2">
+            <button onClick="{{ o.pick }}" style="cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 7px; border: none; color: {{ o.color }}; background: {{ o.bg }};">{{ o.l }}</button>
+          </sc-for>
+        </div>
+        <button onClick="{{ readAll }}" style="cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; color: #38bdf8; background: transparent; border: none; padding: 6px 0;" style-hover="color: #7dd3fc;">Marcar todas como lidas</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <sc-for list="{{ nItems }}" as="n" hint-placeholder-count="5">
+          <a href="{{ n.href }}" onClick="{{ n.read }}" style="text-decoration: none; color: #ffffff; display: flex; gap: 14px; align-items: flex-start; padding: 14px; border-radius: 14px; background: {{ n.bg }}; border: 1px solid {{ n.border }};" style-hover="border-color: rgba(56,189,248,0.45); color: #ffffff;">
+            <span style="width: 38px; height: 38px; flex: none; border-radius: 10px; background: {{ n.iconBg }}; display: flex; align-items: center; justify-content: center;"><i class="{{ n.icon }}" style="font-size: 19px; color: {{ n.color }};"></i></span>
+            <span style="display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0;">
+              <span style="display: flex; justify-content: space-between; gap: 10px; align-items: baseline;"><span style="font-size: 14px; font-weight: 600;">{{ n.t }}</span><span style="font-size: 12px; color: #64748b; white-space: nowrap;">{{ n.when }}</span></span>
+              <span style="font-size: 13px; color: #94a3b8; text-wrap: pretty;">{{ n.d }}</span>
+            </span>
+            <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width: 8px; height: 8px; flex: none; margin-top: 6px; border-radius: 50%; background: #38bdf8;"></span></sc-if>
+          </a>
+        </sc-for>
+        <sc-if value="{{ nEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 40px 12px; text-align: center; font-size: 14px; color: #94a3b8;">Nenhuma notificação não lida.</div>
+        </sc-if>
+      </div>
+      <a href="Configuracoes.dc.html?tab=preferencias" style="margin-top: auto; font-size: 13px; color: #94a3b8; text-decoration: none;" style-hover="color: #38bdf8;">Ajustar avisos no seu perfil e nas preferências</a>
+    </aside>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:260,&quot;height&quot;:800},&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dash&quot;,&quot;licitacoes&quot;,&quot;hub&quot;,&quot;score&quot;,&quot;propostas&quot;,&quot;clientes&quot;,&quot;obras&quot;,&quot;equipes&quot;,&quot;especialistas&quot;,&quot;biblioteca&quot;,&quot;financeiro&quot;,&quot;config&quot;],&quot;default&quot;:&quot;dash&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const KEY = 'vx-sidebar-collapsed';
+const PKEY = 'vx-profile';
+const GROUPS = [
+  ['VISÃO GERAL', [['Dashboard', 'Dashboard.dc.html', 'dash', 'ph ph-squares-four']]],
+  ['LICITAÇÕES', [
+    ['Licitações', 'Licitacoes.dc.html', 'licitacoes', 'ph ph-gavel'],
+    ['Processar edital', 'Intelligence%20Hub.dc.html', 'hub', 'ph ph-scan'],
+    ['Go/No-Go', 'Score%20Go-No-Go.dc.html', 'score', 'ph ph-gauge'],
+    ['Propostas', 'Gerador%20de%20Propostas.dc.html', 'propostas', 'ph ph-file-text'],
+    ['Clientes', 'Clientes.dc.html', 'clientes', 'ph ph-buildings'],
+  ]],
+  ['OPERAÇÃO', [
+    ['Obras e Contratos', 'Obras%20e%20Contratos.dc.html', 'obras', 'ph ph-hard-hat'],
+    ['Equipes e Profissionais', 'Equipes%20e%20Profissionais.dc.html', 'equipes', 'ph ph-users-three'],
+    ['Especialistas', 'Banco%20de%20Especialistas.dc.html', 'especialistas', 'ph ph-identification-badge'],
+  ]],
+  ['GESTÃO', [['Biblioteca', 'Biblioteca%20Documental.dc.html', 'biblioteca', 'ph ph-books'], ['Financeiro', 'Financeiro.dc.html', 'financeiro', 'ph ph-currency-dollar']]],
+  ['SISTEMA', [['Configurações', 'Configuracoes.dc.html', 'config', 'ph ph-gear-six']]],
+];
+const DEF = { nome: 'Vinicius Duque', cargo: 'Head de Operações', email: 'vinicius@verticeos.com', fone: '(11) 99876-5432', registro: 'CREA-SP 5063214870', base: 'São Paulo - SP', cor: '#1e3a5f', foto: '', nPrazos: true, nEditais: true, nResumo: false };
+const CORES = ['#1e3a5f', '#0e7490', '#1d4ed8', '#7c2d12', '#14532d'];
+const NKEY = 'vx-notif-read';
+const NOTIFS = [
+  [1, 'ph ph-alarm', '#fbbf24', 'Sessão do PE 042/2026 em 48h', 'Petrobras S.A. · proposta deve ser enviada até 15/04.', 'há 12 min', 'Licitacoes.dc.html'],
+  [2, 'ph ph-sparkle', '#38bdf8', 'Novo edital compatível', 'TP 014/2026 · Prefeitura de Campinas atingiu score 82 no Go/No-Go.', 'há 1 h', 'Score%20Go-No-Go.dc.html'],
+  [3, 'ph ph-scan', '#60a5fa', 'Edital processado', 'CC 022/2026 · Sabesp. 23 exigências de habilitação extraídas.', 'há 3 h', 'Intelligence%20Hub.dc.html'],
+  [4, 'ph ph-warning', '#f87171', 'NF-2026/084 vencida', 'Companhia Docas do Estado · R$ 212 mil sem pagamento.', 'ontem', 'Financeiro.dc.html'],
+  [5, 'ph ph-file-text', '#fbbf24', 'Certidão de FGTS vence em 5 dias', 'Renove para não perder a habilitação nos editais em andamento.', 'ontem', 'Biblioteca%20Documental.dc.html'],
+  [6, 'ph ph-hard-hat', '#94a3b8', 'CTR-2026/007 suspenso', 'Companhia Docas do Estado pediu suspensão por 30 dias.', '2 dias', 'Obras%20e%20Contratos.dc.html'],
+  [7, 'ph ph-users-three', '#94a3b8', 'Paulo Andrade entrou de férias', 'Retorno previsto em 20/10. Disponibilidade de TI reduzida.', '3 dias', 'Equipes%20e%20Profissionais.dc.html'],
+];
+const NR0 = [6, 7];
+const CV = 260;
+const ini = n => (n || '').split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase() || '?';
+class Component extends DCLogic {
+  state = { collapsed: false, profile: DEF, open: false, draft: null, err: '', nOpen: false, nTab: 'todas', nRead: NR0 };
+  setRead(ids) {
+    this.setState({ nRead: ids });
+    try { localStorage.setItem(NKEY, JSON.stringify(ids)); localStorage.setItem('vx-notif-allread', ids.length >= NOTIFS.length ? '1' : '0'); } catch (e) {}
+    if (ids.length >= NOTIFS.length) document.documentElement.setAttribute('data-vx-read', ''); else document.documentElement.removeAttribute('data-vx-read');
+  }
+  startCrop(src) {
+    const img = new Image();
+    img.onload = () => { this._img = img; this.setState({ crop: { src, w: img.naturalWidth, h: img.naturalHeight, zoom: 1, x: 0, y: 0 } }); };
+    img.src = src;
+  }
+  cropGeom(c, zoom) { const s = (CV / Math.min(c.w, c.h)) * zoom; return { dw: c.w * s, dh: c.h * s }; }
+  clampCrop(c) {
+    const { dw, dh } = this.cropGeom(c, c.zoom), mx = (dw - CV) / 2, my = (dh - CV) / 2;
+    return { ...c, x: Math.max(-mx, Math.min(mx, c.x)), y: Math.max(-my, Math.min(my, c.y)) };
+  }
+  setZoom(z) { this.setState(s => s.crop ? { crop: this.clampCrop({ ...s.crop, zoom: Math.max(1, Math.min(3, z)) }) } : null); }
+  cropVals(setD) {
+    const c = this.state.crop;
+    if (!c) return { cropping: false };
+    const { dw, dh } = this.cropGeom(c, c.zoom);
+    return {
+      cropping: true, cSrc: c.src, cW: dw + 'px', cH: dh + 'px',
+      cT: 'translate(calc(-50% + ' + c.x + 'px), calc(-50% + ' + c.y + 'px))',
+      cZoom: c.zoom, cZoomLabel: Math.round(c.zoom * 100) + '%',
+      cOnZoom: e => this.setZoom(parseFloat(e.target.value)),
+      cZoomIn: () => this.setZoom(c.zoom + 0.2), cZoomOut: () => this.setZoom(c.zoom - 0.2),
+      cWheel: e => this.setZoom(c.zoom - e.deltaY * 0.002),
+      cDown: e => { e.currentTarget.setPointerCapture(e.pointerId); this._drag = { px: e.clientX, py: e.clientY, x: c.x, y: c.y }; },
+      cMove: e => { const d = this._drag; if (!d) return; this.setState(s => ({ crop: this.clampCrop({ ...s.crop, x: d.x + e.clientX - d.px, y: d.y + e.clientY - d.py }) })); },
+      cUp: () => { this._drag = null; },
+      cReset: () => this.setState(s => ({ crop: { ...s.crop, zoom: 1, x: 0, y: 0 } })),
+      cCancel: () => this.setState({ crop: null }),
+      cApply: () => {
+        const OUT = 320, k = OUT / CV, cv = document.createElement('canvas'); cv.width = cv.height = OUT;
+        const ctx = cv.getContext('2d');
+        ctx.drawImage(this._img, (CV / 2 + c.x - dw / 2) * k, (CV / 2 + c.y - dh / 2) * k, dw * k, dh * k);
+        setD('foto', cv.toDataURL('image/jpeg', 0.88));
+        this.setState({ crop: null });
+      },
+    };
+  }
+  closeN() { if (location.hash === '#notificacoes') history.replaceState(null, '', location.pathname + location.search); this.setState({ nOpen: false }); }
+  componentDidMount() {
+    try { if (localStorage.getItem(KEY) === '1') this.setState({ collapsed: true }); } catch (e) {}
+    try { const p = JSON.parse(localStorage.getItem(PKEY) || 'null'); if (p) this.setState({ profile: { ...DEF, ...p } }); } catch (e) {}
+    try { const r = JSON.parse(localStorage.getItem(NKEY) || 'null'); if (Array.isArray(r)) this.setState({ nRead: r }); } catch (e) {}
+    this._h = () => {
+      if (location.hash === '#perfil') this.setState(s => ({ open: true, nOpen: false, draft: { ...s.profile }, err: '' }));
+      if (location.hash === '#notificacoes') this.setState({ nOpen: true, open: false });
+    };
+    window.addEventListener('hashchange', this._h);
+    this._h();
+  }
+  componentWillUnmount() { window.removeEventListener('hashchange', this._h); }
+  rootRef = React.createRef();
+  componentDidUpdate() {
+    const el = this.rootRef.current; if (!el) return;
+    let m = el.parentElement;
+    while (m && m !== document.body && getComputedStyle(m).position !== 'sticky') m = m.parentElement;
+    if (m && m !== document.body) { if (this._z == null) this._z = m.style.zIndex || ''; m.style.zIndex = this.state.open || this.state.nOpen ? '200' : this._z; }
+  }
+  closeP() { if (location.hash === '#perfil') history.replaceState(null, '', location.pathname + location.search); this.setState({ open: false, draft: null, err: '', crop: null }); }
+  renderVals() {
+    const a = this.props.active ?? 'dash';
+    const c = this.state.collapsed;
+    const P = this.state.profile, D = this.state.draft || P;
+    const setD = (k, v) => this.setState(s => ({ draft: { ...s.draft, [k]: v } }));
+    const tg = (t, d, k) => ({ t, d, on: !!D[k], toggle: () => setD(k, !D[k]), track: D[k] ? '#2563eb' : '#1e293b', knob: D[k] ? '20px' : '0px' });
+    return {
+      rootRef: this.rootRef, expanded: !c, collapsed: c,
+      onAsideScroll: e => { const el = e.currentTarget; el.setAttribute('data-scrolling', ''); clearTimeout(this._st); this._st = setTimeout(() => el.removeAttribute('data-scrolling'), 900); },
+      goHome: e => { try { sessionStorage.removeItem('vx-intro-skip'); } catch (x) {} if (a === 'dash' || /Dashboard/.test(location.pathname) || !/\.dc\.html/.test(location.pathname)) { e.preventDefault(); location.reload(); } },
+      width: c ? '76px' : '256px',
+      logoPad: c ? '24px 0' : '24px 30px', logoJustify: c ? 'center' : 'flex-start',
+      groupGap: c ? '8px' : '20px', itemJustify: c ? 'center' : 'flex-start', footPadX: c ? '0' : '24px',
+      chevron: c ? 'ph ph-caret-right' : 'ph ph-caret-left',
+      toggleLabel: c ? 'Expandir menu' : 'Recolher menu',
+      toggle: () => this.setState(s => { const n = !s.collapsed; try { localStorage.setItem(KEY, n ? '1' : '0'); } catch (e) {} return { collapsed: n }; }),
+      groups: GROUPS.map(([title, items]) => ({
+        title,
+        items: items.map(([label, href, id, icon]) => {
+          const on = !!id && id === a;
+          const onClick = id === 'dash' ? e => { try { sessionStorage.setItem('vx-intro-skip', '1'); } catch (x) {} if (a === 'dash') { e.preventDefault(); } } : undefined;
+          return { label, href, icon, onClick, color: on ? '#ffffff' : '#cbd5e1', iconColor: on ? '#60a5fa' : '#94a3b8', bg: on ? 'rgba(37,99,235,0.18)' : 'transparent', weight: on ? 600 : 400 };
+        }),
+      })),
+      pNome: P.nome, pCargoUp: (P.cargo || '').toUpperCase(), pIni: ini(P.nome), pCor: P.cor, pFoto: P.foto, pHasPhoto: !!P.foto, pNoPhoto: !P.foto,
+      pOpen: this.state.open,
+      nOpen: this.state.nOpen, closeN: () => this.closeN(),
+      ...(() => {
+        const R = this.state.nRead, tab = this.state.nTab;
+        const unread = NOTIFS.filter(n => !R.includes(n[0])).length;
+        const list = NOTIFS.filter(n => tab === 'todas' || !R.includes(n[0]));
+        return {
+          nTitle: unread ? unread + (unread === 1 ? ' não lida' : ' não lidas') : 'Tudo em dia',
+          nTabs: [['todas', 'Todas'], ['naolidas', 'Não lidas (' + unread + ')']].map(([v, l]) => ({ l, pick: () => this.setState({ nTab: v }), color: tab === v ? '#ffffff' : '#94a3b8', bg: tab === v ? '#1e293b' : 'transparent' })),
+          readAll: () => this.setRead(NOTIFS.map(n => n[0])),
+          nEmpty: !list.length,
+          nItems: list.map(([id, icon, color, t, d, when, href]) => { const u = !R.includes(id); return { icon, color, t, d, when, href, unread: u, bg: u ? 'rgba(37,99,235,0.08)' : 'transparent', border: u ? 'rgba(59,130,246,0.25)' : 'rgba(255,255,255,0.06)', iconBg: 'rgba(255,255,255,0.05)', read: () => { if (u) this.setRead([...R, id]); } }; }),
+        };
+      })(),
+      closeP: () => this.closeP(),
+      dNome: D.nome || 'Sem nome', dCargo: D.cargo, dIni: ini(D.nome), dCor: D.cor, dFoto: D.foto, dHasPhoto: !!D.foto, dNoPhoto: !D.foto,
+      onPhoto: e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return; const r = new FileReader(); r.onload = () => this.startCrop(r.result); r.readAsDataURL(f); },
+      adjustPhoto: () => D.foto && this.startCrop(D.foto),
+      ...this.cropVals(setD),
+      removePhoto: () => setD('foto', ''),
+      cores: CORES.map(v => ({ v, ring: D.cor === v ? '#38bdf8' : 'transparent', pick: () => setD('cor', v) })),
+      pFields: [['nome', 'NOME', 'Seu nome'], ['cargo', 'CARGO', 'Ex.: Analista de licitações'], ['email', 'E-MAIL', 'nome@empresa.com'], ['fone', 'TELEFONE / WHATSAPP', '(00) 00000-0000'], ['registro', 'REGISTRO PROFISSIONAL', 'Ex.: CREA-SP 000000'], ['base', 'BASE', 'Cidade - UF']]
+        .map(([k, label, ph]) => ({ label, ph, value: D[k] || '', onChange: e => setD(k, e.target.value) })),
+      pToggles: [tg('Prazos de edital', 'Aviso 48h antes de sessões e entregas.', 'nPrazos'), tg('Editais compatíveis', 'Novos editais acima do score mínimo.', 'nEditais'), tg('Resumo semanal', 'E-mail às segundas com a carteira da semana.', 'nResumo')],
+      pErr: this.state.err,
+      saveP: () => {
+        const d = this.state.draft; if (!d.nome.trim()) return this.setState({ err: 'Informe seu nome.' });
+        try { localStorage.setItem(PKEY, JSON.stringify(d)); } catch (e) { return this.setState({ err: 'A foto é grande demais para salvar. Tente uma imagem menor.' }); }
+        this.setState({ profile: d }); this.closeP();
+        window.dispatchEvent(new CustomEvent('vx-profile'));
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

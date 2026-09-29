@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="theme.js"></script>
+<title>Vértice OS — Gerador de Propostas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #0a0f1c; }
+a { color: #38bdf8; } a:hover { color: #7dd3fc; }
+input:focus-visible, button:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }
+select option { background: #0f1729; color: #ffffff; }
+[contenteditable="true"]:hover { background: rgba(37,99,235,0.06); }
+[contenteditable="true"]:focus { outline: 2px solid #3b82f6; outline-offset: 4px; border-radius: 2px; background: transparent; }
+</style>
+</helmet>
+<div style="display: grid; grid-template-columns: auto minmax(0,1fr); min-height: 100vh; background: #0a0f1c; color: #ffffff; font-family: 'Geist', sans-serif;">
+  <dc-import name="Sidebar" active="propostas" hint-size="100%,100vh" style="position: sticky; top: 0; height: 100vh; align-self: start; z-index: 5;"></dc-import>
+  <main style="display: flex; flex-direction: column; min-width: 0;">
+    <header style="height: 104px; display: flex; align-items: center; gap: 24px; padding: 0 40px; border-bottom: 1px solid rgba(255,255,255,0.04);">
+      <nav aria-label="Navegação estrutural" style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #94a3b8; white-space: nowrap; flex: none;"><a href="Licitacoes.dc.html" style="color: #94a3b8; text-decoration: none;" style-hover="color: #38bdf8;">Licitações</a><span aria-hidden="true">/</span><a href="Gerador%20de%20Propostas.dc.html" aria-current="page" style="color: #ffffff; font-weight: 600; text-decoration: none;" style-hover="color: #38bdf8;">Propostas</a></nav>
+      <div style="flex: 1 1 160px; min-width: 0; max-width: 560px; margin: 0 auto; position: relative; z-index: 20;"><dc-import name="Busca" hint-size="100%,44px" style="width: 100%;"></dc-import></div>
+      <div style="display: flex; align-items: center; gap: 4px; flex: 0 1 auto; min-width: 0;">
+        <a href="#notificacoes" title="Notificações" aria-label="Notificações" style="position: relative; flex: none; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #cbd5e1; text-decoration: none;" style-hover="background: rgba(255,255,255,0.05); color: #ffffff;"><i class="ph ph-bell" style="font-size: 22px;"></i><span data-vx-unread="" style="position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; border-radius: 50%; background: #38bdf8;"></span></a>
+        <button data-vx-theme-toggle="" title="Alternar tema claro/escuro" aria-label="Alternar tema claro/escuro" style="cursor: pointer; flex: none; width: 40px; height: 40px; border-radius: 10px; border: none; padding: 0; background: transparent; display: flex; align-items: center; justify-content: center; color: #cbd5e1;" style-hover="background: rgba(255,255,255,0.05); color: #ffffff;"><i data-vx-icon="moon" class="ph ph-moon" style="font-size: 22px;"></i><i data-vx-icon="sun" class="ph ph-sun" style="font-size: 22px;"></i></button>
+        <span style="width: 1px; height: 32px; flex: none; background: rgba(255,255,255,0.1); margin: 0 8px;"></span>
+        <a href="#perfil" title="Meu perfil" style="display: flex; align-items: center; gap: 12px; min-width: 40px; text-decoration: none; color: #ffffff;" style-hover="color: #ffffff;">
+          <span style="display: flex; flex-direction: column; align-items: stretch; text-align: right; gap: 2px; min-width: 0;"><span data-vx-name="" style="font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;">Vinicius Duque</span><span data-vx-email="" style="font-size: 12px; color: #94a3b8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;">vinicius@verticeos.com</span></span>
+          <span data-vx-avatar="" style="width: 40px; height: 40px; flex: none; border-radius: 50%; background: #1e3a5f; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #ffffff;">VD</span>
+        </a>
+      </div>
+    </header>
+
+    <div style="padding: 40px; display: flex; flex-direction: column; gap: 28px; max-width: 1680px; width: 100%; margin: 0 auto; box-sizing: border-box;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 12px; letter-spacing: 0.2em; color: #38bdf8;">GERADOR DE PROPOSTAS</span>
+        <h1 style="margin: 0; font-size: 40px; font-weight: 600; letter-spacing: -0.03em;">Documentos da proposta</h1>
+        <p style="margin: 0; font-size: 16px; color: #94a3b8; max-width: 64ch;">Preencha os dados uma vez. Os quatro modelos são montados automaticamente. Clique em qualquer parágrafo do documento para editar antes de exportar.</p>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+        <div style="flex: 1 1 320px; min-width: 0; max-width: 420px; background: linear-gradient(160deg, #111c35, #0c1426); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 18px; box-sizing: border-box;">
+          <span style="font-size: 12px; letter-spacing: 0.16em; color: #94a3b8;">DADOS DE ENTRADA</span>
+          <label style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 11px; letter-spacing: 0.14em; color: #cbd5e1;">LICITAÇÃO</span>
+            <select value="{{ licId }}" onChange="{{ onLic }}" style="font-family: inherit; font-size: 14px; color: #ffffff; background: #0a1122; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 11px 12px;">
+              <sc-for list="{{ licOpts }}" as="o" hint-placeholder-count="2"><option value="{{ o.id }}">{{ o.label }}</option></sc-for>
+            </select>
+          </label>
+          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+            <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 6px;">
+              <span style="font-size: 13px; font-weight: 600;">{{ g.title }}</span>
+              <sc-for list="{{ g.fields }}" as="f" hint-placeholder-count="2">
+                <label style="display: flex; flex-direction: column; gap: 6px;">
+                  <span style="font-size: 11px; letter-spacing: 0.14em; color: #cbd5e1;">{{ f.label }}</span>
+                  <input value="{{ f.value }}" onChange="{{ f.onChange }}" style="font-family: inherit; font-size: 14px; color: #ffffff; background: #0a1122; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 12px; outline: none;" style-focus="border-color: #3b82f6;">
+                </label>
+              </sc-for>
+            </div>
+          </sc-for>
+          <label style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 11px; letter-spacing: 0.14em; color: #cbd5e1;">OBJETO</span>
+            <textarea value="{{ objeto }}" onChange="{{ onObjeto }}" rows="4" style="font-family: inherit; font-size: 14px; line-height: 1.5; color: #ffffff; background: #0a1122; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 12px; outline: none; resize: vertical;"></textarea>
+          </label>
+        </div>
+
+        <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <div style="display: flex; flex-wrap: wrap; gap: 4px; background: #0f1729; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 4px;">
+              <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+                <button onClick="{{ t.pick }}" style="cursor: pointer; font-family: inherit; font-size: 13px; padding: 9px 14px; border-radius: 9px; border: none; color: {{ t.color }}; background: {{ t.bg }}; font-weight: {{ t.weight }};">{{ t.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button onClick="{{ exportDocx }}" style="cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; color: #ffffff; background: transparent; border: 1px solid rgba(255,255,255,0.14); border-radius: 10px; padding: 10px 16px;" style-hover="background: rgba(255,255,255,0.05);">Exportar DOCX</button>
+              <button onClick="{{ exportPdf }}" style="cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; color: #ffffff; background: #2563eb; border: none; border-radius: 10px; padding: 10px 16px;" style-hover="background: #1d4ed8;" style-active="background: #1e40af;">Exportar PDF</button>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; color: #94a3b8;">
+            <span>{{ editNote }}</span>
+            <sc-if value="{{ edited }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ restore }}" style="cursor: pointer; font-family: inherit; font-size: 13px; color: #38bdf8; background: transparent; border: none; padding: 0;">Restaurar modelo</button>
+            </sc-if>
+          </div>
+          <div style="background: #111a2e; border-radius: 20px; padding: 32px; display: flex; justify-content: center; overflow-x: auto;">
+            <article style="width: 100%; max-width: 760px; min-height: 980px; background: #ffffff; color: #1a1a1a; font-family: 'Source Serif 4', Georgia, serif; font-size: 16px; line-height: 1.65; padding: 72px 76px; box-sizing: border-box; box-shadow: 0 20px 60px rgba(0,0,0,0.45); display: flex; flex-direction: column; gap: 14px;">
+              <sc-for list="{{ paras }}" as="p" hint-placeholder-count="8">
+                <p contentEditable="true" suppressContentEditableWarning="{{ true }}" onBlur="{{ p.onBlur }}" style="margin: 0; white-space: pre-wrap; text-align: {{ p.align }}; font-weight: {{ p.weight }}; font-size: {{ p.size }}; letter-spacing: {{ p.ls }}; padding-top: {{ p.pt }};">{{ p.t }}</p>
+              </sc-for>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const LICS = [
+  { id: 'cps', label: 'Concorrência Eletrônica nº 012/2026 — Campinas', orgao: 'Prefeitura Municipal de Campinas — Secretaria de Infraestrutura', objeto: 'contratação de empresa especializada para execução de obras de pavimentação asfáltica e drenagem em vias do Município de Campinas', cidade: 'Campinas' },
+  { id: 'rp', label: 'Pregão Eletrônico nº 045/2026 — Ribeirão Preto', orgao: 'Prefeitura Municipal de Ribeirão Preto — Secretaria de Obras', objeto: 'contratação de serviços de manutenção predial preventiva e corretiva em unidades escolares municipais', cidade: 'Ribeirão Preto' },
+];
+const DATA = 'São Paulo, 28 de setembro de 2026';
+const TPLS = [
+  { id: 'carta', label: 'Carta de apresentação' },
+  { id: 'decl', label: 'Declarações' },
+  { id: 'tec', label: 'Proposta técnica' },
+  { id: 'ident', label: 'Identificação da empresa' },
+];
+const H = t => ({ k: 'h', t }), P = t => ({ k: 'p', t }), R = t => ({ k: 'r', t }), S = t => ({ k: 's', t });
+function build(id, d) {
+  const sign = S(`${d.responsavel}\n${d.cargo}\n${d.empresa}`);
+  const date = R(`${d.cidadeAss}, 28 de setembro de 2026.`);
+  if (id === 'carta') return [H('CARTA DE APRESENTAÇÃO'), date, P(`À\n${d.orgao}\nComissão de Contratação`), P(`Ref.: ${d.licitacao}`), P('Prezados Senhores,'),
+    P(`A ${d.empresa}, inscrita no CNPJ sob o nº ${d.cnpj}, com sede em ${d.endereco}, por meio de seu representante legal, ${d.responsavel}, ${d.cargo}, apresenta sua documentação de habilitação e proposta para a licitação em referência, cujo objeto é a ${d.objeto}.`),
+    P('Declaramos conhecer e aceitar integralmente as condições do edital e seus anexos, e nos colocamos à disposição para os esclarecimentos que se fizerem necessários.'), P('Atenciosamente,'), sign];
+  if (id === 'decl') return [H('DECLARAÇÕES'), P(`Ref.: ${d.licitacao}`),
+    P(`A ${d.empresa}, CNPJ nº ${d.cnpj}, por intermédio de seu representante legal, ${d.responsavel}, declara, para os devidos fins, que:`),
+    P('a) não emprega menor de 18 anos em trabalho noturno, perigoso ou insalubre, nem menor de 16 anos em qualquer trabalho, salvo na condição de aprendiz, a partir de 14 anos;'),
+    P('b) inexistem fatos impeditivos à sua habilitação, ciente da obrigatoriedade de declarar ocorrências posteriores;'),
+    P('c) cumpre as exigências de reserva de cargos para pessoas com deficiência e para reabilitados da Previdência Social;'),
+    P('d) sua proposta foi elaborada de maneira independente e seu conteúdo não foi comunicado a nenhum outro participante;'),
+    P('e) está de acordo com todas as condições estabelecidas no edital.'), date, sign];
+  if (id === 'tec') return [H('PROPOSTA TÉCNICA'), P(`Ref.: ${d.licitacao}\nÓrgão: ${d.orgao}`),
+    P(`1. Objeto\nA presente proposta tem por objeto a ${d.objeto}.`),
+    P('2. Metodologia de execução\nOs serviços serão executados em frentes de trabalho sequenciais, com mobilização de canteiro, controle tecnológico de materiais e relatórios semanais de avanço físico à fiscalização.'),
+    P(`3. Equipe técnica\nResponsável técnico: ${d.responsavel}, ${d.cargo}. A equipe de campo será composta por profissionais homologados no banco de especialistas da empresa.`),
+    P('4. Prazo de execução\nConforme cronograma físico-financeiro do edital, contado a partir da emissão da ordem de serviço.'),
+    P('5. Validade da proposta\n60 (sessenta) dias corridos a contar da data de abertura.'), date, sign];
+  return [H('IDENTIFICAÇÃO DA EMPRESA'), P(`Ref.: ${d.licitacao}`),
+    P(`Razão social: ${d.empresa}\nCNPJ: ${d.cnpj}\nEndereço: ${d.endereco}\nTelefone: ${d.telefone}\nE-mail: ${d.email}`),
+    P(`Representante legal: ${d.responsavel}\nCargo: ${d.cargo}\nCPF: ${d.cpf}`),
+    P('Dados bancários para pagamento: conforme cadastro no sistema de fornecedores do órgão.'), date, sign];
+}
+const STY = {
+  h: { align: 'center', weight: 600, size: '18px', ls: '0.08em', pt: '0' },
+  p: { align: 'justify', weight: 400, size: '16px', ls: '0', pt: '0' },
+  r: { align: 'right', weight: 400, size: '16px', ls: '0', pt: '12px' },
+  s: { align: 'center', weight: 400, size: '16px', ls: '0', pt: '56px' },
+};
+const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, '<br>');
+
+class Component extends DCLogic {
+  state = {
+    lic: 'cps', tpl: 'carta', over: {},
+    d: { empresa: 'Vértice Operações e Soluções Ltda.', cnpj: '28.417.903/0001-56', endereco: 'Av. Paulista, 1842, cj. 121, São Paulo/SP', telefone: '(11) 3456-7800', email: 'licitacoes@verticeos.com',
+      responsavel: 'Vinicius Duque', cargo: 'Head de Operações', cpf: '312.845.***-**', cidadeAss: 'São Paulo' },
+  };
+  current() {
+    const s = this.state, L = LICS.find(l => l.id === s.lic);
+    const d = { ...s.d, orgao: L.orgao, licitacao: L.label, objeto: s.objeto ?? L.objeto };
+    const o = s.over[s.tpl] || {};
+    return build(s.tpl, d).map((p, i) => ({ ...p, t: o[i] ?? p.t }));
+  }
+  html() {
+    const tpl = TPLS.find(t => t.id === this.state.tpl);
+    const body = this.current().map(p => { const st = STY[p.k]; return `<p style="text-align:${st.align};font-weight:${st.weight};font-size:${p.k === 'h' ? '14pt' : '12pt'};margin:0 0 10pt;${st.pt !== '0' ? 'margin-top:' + (p.k === 's' ? '40pt' : '10pt') + ';' : ''}">${esc(p.t)}</p>`; }).join('');
+    return `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>${tpl.label}</title><style>@page{size:A4;margin:2.5cm}body{font-family:'Source Serif 4',Georgia,serif;line-height:1.5;color:#1a1a1a}</style></head><body>${body}</body></html>`;
+  }
+  renderVals() {
+    const s = this.state, L = LICS.find(l => l.id === s.lic);
+    const setD = k => e => { const v = e.target.value; this.setState(st => ({ d: { ...st.d, [k]: v } })); };
+    const F = (k, label) => ({ label, value: s.d[k], onChange: setD(k) });
+    const edits = Object.keys(s.over[s.tpl] || {}).length;
+    const slug = TPLS.find(t => t.id === s.tpl).label.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-');
+    return {
+      licId: s.lic, licOpts: LICS, onLic: e => this.setState({ lic: e.target.value, objeto: undefined }),
+      groups: [
+        { title: 'Empresa', fields: [F('empresa', 'RAZÃO SOCIAL'), F('cnpj', 'CNPJ'), F('endereco', 'ENDEREÇO'), F('telefone', 'TELEFONE'), F('email', 'E-MAIL')] },
+        { title: 'Responsável', fields: [F('responsavel', 'NOME'), F('cargo', 'CARGO'), F('cpf', 'CPF')] },
+        { title: 'Local de assinatura', fields: [F('cidadeAss', 'CIDADE')] },
+      ],
+      objeto: s.objeto ?? L.objeto, onObjeto: e => this.setState({ objeto: e.target.value }),
+      tabs: TPLS.map(t => { const on = t.id === s.tpl; const n = Object.keys(s.over[t.id] || {}).length;
+        return { label: t.label + (n ? ' •' : ''), pick: () => this.setState({ tpl: t.id }), color: on ? '#ffffff' : '#94a3b8', bg: on ? '#2563eb' : 'transparent', weight: on ? 600 : 400 }; }),
+      paras: this.current().map((p, i) => ({ ...STY[p.k], t: p.t,
+        onBlur: e => { const t = e.currentTarget.innerText; this.setState(st => ({ over: { ...st.over, [st.tpl]: { ...(st.over[st.tpl] || {}), [i]: t } } })); } })),
+      edited: edits > 0,
+      editNote: edits ? edits + (edits === 1 ? ' parágrafo editado manualmente' : ' parágrafos editados manualmente') : 'Documento gerado a partir dos dados de entrada',
+      restore: () => this.setState(st => { const o = { ...st.over }; delete o[st.tpl]; return { over: o }; }),
+      exportDocx: () => {
+        const blob = new Blob(['\ufeff' + this.html()], { type: 'application/msword' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = slug + '.doc'; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      },
+      exportPdf: () => { const w = window.open('', '_blank'); if (!w) return; w.document.write(this.html()); w.document.close(); w.focus(); setTimeout(() => w.print(), 300); },
+    };
+  }
+}
+</script>
+</body>
+</html>

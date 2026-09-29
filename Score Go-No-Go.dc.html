@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="theme.js"></script>
+<title>Vértice OS — Score Go/No-Go</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #0a0f1c; }
+a { color: #38bdf8; } a:hover { color: #7dd3fc; }
+input:focus-visible, button:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }
+</style>
+</helmet>
+<div style="display: grid; grid-template-columns: auto minmax(0,1fr); min-height: 100vh; background: #0a0f1c; color: #ffffff; font-family: 'Geist', sans-serif;">
+  <dc-import name="Sidebar" active="score" hint-size="100%,100vh" style="position: sticky; top: 0; height: 100vh; align-self: start; z-index: 5;"></dc-import>
+  <main style="display: flex; flex-direction: column; min-width: 0;">
+    <header style="height: 104px; display: flex; align-items: center; gap: 24px; padding: 0 40px; border-bottom: 1px solid rgba(255,255,255,0.04);">
+      <nav aria-label="Navegação estrutural" style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #94a3b8; white-space: nowrap; flex: none;"><a href="Licitacoes.dc.html" style="color: #94a3b8; text-decoration: none;" style-hover="color: #38bdf8;">Licitações</a><span aria-hidden="true">/</span><a href="Score%20Go-No-Go.dc.html" aria-current="page" style="color: #ffffff; font-weight: 600; text-decoration: none;" style-hover="color: #38bdf8;">Análise Go/No-Go</a></nav>
+      <div style="flex: 1 1 160px; min-width: 0; max-width: 560px; margin: 0 auto; position: relative; z-index: 20;"><dc-import name="Busca" hint-size="100%,44px" style="width: 100%;"></dc-import></div>
+      <div style="display: flex; align-items: center; gap: 4px; flex: 0 1 auto; min-width: 0;">
+        <a href="#notificacoes" title="Notificações" aria-label="Notificações" style="position: relative; flex: none; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #cbd5e1; text-decoration: none;" style-hover="background: rgba(255,255,255,0.05); color: #ffffff;"><i class="ph ph-bell" style="font-size: 22px;"></i><span data-vx-unread="" style="position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; border-radius: 50%; background: #38bdf8;"></span></a>
+        <button data-vx-theme-toggle="" title="Alternar tema claro/escuro" aria-label="Alternar tema claro/escuro" style="cursor: pointer; flex: none; width: 40px; height: 40px; border-radius: 10px; border: none; padding: 0; background: transparent; display: flex; align-items: center; justify-content: center; color: #cbd5e1;" style-hover="background: rgba(255,255,255,0.05); color: #ffffff;"><i data-vx-icon="moon" class="ph ph-moon" style="font-size: 22px;"></i><i data-vx-icon="sun" class="ph ph-sun" style="font-size: 22px;"></i></button>
+        <span style="width: 1px; height: 32px; flex: none; background: rgba(255,255,255,0.1); margin: 0 8px;"></span>
+        <a href="#perfil" title="Meu perfil" style="display: flex; align-items: center; gap: 12px; min-width: 40px; text-decoration: none; color: #ffffff;" style-hover="color: #ffffff;">
+          <span style="display: flex; flex-direction: column; align-items: stretch; text-align: right; gap: 2px; min-width: 0;"><span data-vx-name="" style="font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;">Vinicius Duque</span><span data-vx-email="" style="font-size: 12px; color: #94a3b8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;">vinicius@verticeos.com</span></span>
+          <span data-vx-avatar="" style="width: 40px; height: 40px; flex: none; border-radius: 50%; background: #1e3a5f; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #ffffff;">VD</span>
+        </a>
+      </div>
+    </header>
+
+    <div style="padding: 40px; display: flex; flex-direction: column; gap: 32px; max-width: 1680px; width: 100%; margin: 0 auto; box-sizing: border-box;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap;">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-size: 12px; letter-spacing: 0.2em; color: #38bdf8;">SCORE GO/NO-GO</span>
+          <h1 style="margin: 0; font-size: 40px; font-weight: 600; letter-spacing: -0.03em;">Vale a pena participar?</h1>
+          <p style="margin: 0; font-size: 16px; color: #94a3b8; max-width: 62ch;">Ajuste os sete critérios. Cada um vale até o seu peso; a soma dá o score de 0 a 100 e a recomendação.</p>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <sc-for list="{{ presets }}" as="p" hint-placeholder-count="3">
+            <button onClick="{{ p.load }}" style="cursor: pointer; font-family: inherit; font-size: 13px; padding: 9px 14px; border-radius: 999px; color: {{ p.color }}; background: {{ p.bg }}; border: 1px solid {{ p.border }};">{{ p.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+        <div style="flex: 999 1 520px; min-width: 0; background: linear-gradient(160deg, #111c35, #0c1426); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 28px; box-sizing: border-box;">
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <span style="font-size: 12px; letter-spacing: 0.16em; color: #94a3b8;">ENTRADAS</span>
+            <span style="font-size: 20px; font-weight: 600; letter-spacing: -0.01em;">{{ lotTitle }}</span>
+          </div>
+          <sc-for list="{{ sliders }}" as="s" hint-placeholder-count="5">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;">
+                <span style="font-size: 15px; font-weight: 600;">{{ s.label }}</span>
+                <span style="font-family: 'Geist Mono', monospace; font-size: 15px;">{{ s.valueLabel }}</span>
+              </div>
+              <input type="range" min="{{ s.min }}" max="{{ s.max }}" step="{{ s.step }}" value="{{ s.value }}" onChange="{{ s.onChange }}" style="width: 100%; accent-color: #2563eb; margin: 0;">
+              <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: #64748b;"><span>{{ s.hint }}</span><span style="font-family: 'Geist Mono', monospace; color: #94a3b8; white-space: nowrap;">{{ s.pts }}</span></div>
+            </div>
+          </sc-for>
+          <sc-for list="{{ segments }}" as="g" hint-placeholder-count="2">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;">
+                <span style="font-size: 15px; font-weight: 600;">{{ g.label }}</span>
+                <span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #94a3b8;">{{ g.pts }}</span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 4px; background: #0a1122; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 4px;">
+                <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="3">
+                  <button onClick="{{ o.pick }}" style="cursor: pointer; font-family: inherit; font-size: 13px; padding: 9px 8px; border-radius: 9px; border: none; color: {{ o.color }}; background: {{ o.bg }}; font-weight: {{ o.weight }};">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 24px; position: sticky; top: 24px;">
+          <div style="background: linear-gradient(160deg, #111c35, #0c1426); border: 1px solid {{ cls.border }}; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; align-items: center; gap: 16px;">
+            <span style="align-self: flex-start; font-size: 12px; letter-spacing: 0.16em; color: #94a3b8;">RESULTADO</span>
+            <dc-import name="Gauge" value="{{ score }}" color="{{ cls.color }}" hint-size="100%,200px"></dc-import>
+            <span style="font-size: 15px; font-weight: 700; padding: 8px 18px; border-radius: 999px; color: {{ cls.color }}; background: {{ cls.bg }};">{{ cls.label }}</span>
+            <span style="font-size: 14px; color: #cbd5e1; text-align: center; max-width: 36ch;">{{ cls.text }}</span>
+            <sc-for list="{{ alerts }}" as="al" hint-placeholder-count="0">
+              <span style="align-self: stretch; font-size: 13px; line-height: 1.5; color: #fecaca; background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); border-radius: 12px; padding: 10px 14px;">{{ al.text }}</span>
+            </sc-for>
+            <button onClick="{{ record }}" style="align-self: stretch; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; color: #ffffff; background: #2563eb; border: none; border-radius: 10px; padding: 12px 20px;" style-hover="background: #1d4ed8;" style-active="background: #1e40af;">{{ recordLabel }}</button>
+          </div>
+          <div style="background: #0f1729; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 16px;">
+            <span style="font-size: 12px; letter-spacing: 0.16em; color: #94a3b8;">COMPOSIÇÃO DO SCORE</span>
+            <sc-for list="{{ breakdown }}" as="b" hint-placeholder-count="7">
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div style="display: flex; justify-content: space-between; font-size: 13px;"><span style="color: #cbd5e1;">{{ b.label }}</span><span style="font-family: 'Geist Mono', monospace; color: #ffffff;">{{ b.pts }}</span></div>
+                <div style="height: 6px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden;"><div style="height: 100%; width: {{ b.pct }}; background: #2563eb; border-radius: 3px; transition: width 0.3s ease;"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: #0f1729; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 28px 32px; display: flex; flex-direction: column; gap: 16px; overflow-x: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;">
+          <span style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em;">Histórico de decisões</span>
+          <span style="font-size: 13px; color: #94a3b8;">{{ historyCount }}</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 110px minmax(220px,1fr) 80px 150px 120px; gap: 12px; font-size: 11px; letter-spacing: 0.14em; color: #64748b; padding: 0 0 8px; border-bottom: 1px solid rgba(255,255,255,0.06); min-width: 680px;">
+          <span>DATA</span><span>LICITAÇÃO</span><span>SCORE</span><span>DECISÃO</span><span>RESPONSÁVEL</span>
+        </div>
+        <sc-for list="{{ history }}" as="h" hint-placeholder-count="4">
+          <div style="display: grid; grid-template-columns: 110px minmax(220px,1fr) 80px 150px 120px; gap: 12px; align-items: center; font-size: 14px; padding: 6px 0; min-width: 680px;">
+            <span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #94a3b8;">{{ h.date }}</span>
+            <span>{{ h.lot }}</span>
+            <span style="font-family: 'Geist Mono', monospace; font-weight: 500;">{{ h.score }}</span>
+            <span style="justify-self: start; font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 999px; color: {{ h.color }}; background: {{ h.bg }};">{{ h.label }}</span>
+            <span style="color: #cbd5e1;">{{ h.who }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const W = { valor: 15, distancia: 10, margem: 20, maoObra: 15, docs: 15, equip: 10, exp: 15 };
+const EQUIP = { proprio: ['Próprios', 1], locacao: ['Locação', 0.6], nenhum: ['Indisponível', 0] };
+const EXP = { similar: ['Atestado similar', 1], parcial: ['Parcial', 0.5], nenhuma: ['Nenhuma', 0] };
+const PRESETS = [
+  { id: 'cps', label: 'Concorrência 012/2026 — Campinas', v: { valor: 3.5, distancia: 95, margem: 14, maoObra: 76, docs: 8, equip: 'proprio', exp: 'similar' } },
+  { id: 'rp', label: 'Pregão 045/2026 — Ribeirão Preto', v: { valor: 1.2, distancia: 320, margem: 12, maoObra: 55, docs: 9, equip: 'locacao', exp: 'parcial' } },
+  { id: 'bau', label: 'Concorrência 031/2026 — Bauru', v: { valor: 9.8, distancia: 350, margem: 8, maoObra: 30, docs: 6, equip: 'nenhum', exp: 'nenhuma' } },
+];
+const CLS = {
+  g: { label: 'Verde · Participar', color: '#34d399', bg: 'rgba(52,211,153,0.14)', border: 'rgba(52,211,153,0.4)', text: 'Critérios favoráveis. Siga para a proposta.' },
+  y: { label: 'Amarelo · Avaliar', color: '#fbbf24', bg: 'rgba(251,191,36,0.14)', border: 'rgba(251,191,36,0.4)', text: 'Há pontos fracos. Discuta com a diretoria antes de seguir.' },
+  r: { label: 'Vermelho · Não participar', color: '#f87171', bg: 'rgba(248,113,113,0.14)', border: 'rgba(248,113,113,0.4)', text: 'Risco alto ou inviável com os recursos atuais.' },
+};
+const clsOf = s => (s >= 70 ? 'g' : s >= 45 ? 'y' : 'r');
+const brl = n => 'R$ ' + n.toFixed(1).replace('.', ',') + ' mi';
+
+// Algoritmo: cada critério normalizado 0–1 × peso; regras eliminatórias limitam o total.
+function compute(v) {
+  const n = {
+    valor: v.valor < 0.3 ? 0.4 : v.valor <= 6 ? 1 : Math.max(0.3, 1 - (v.valor - 6) / 12),
+    distancia: Math.max(0, 1 - v.distancia / 600),
+    margem: Math.min(1, v.margem / 25),
+    maoObra: Math.min(1, v.maoObra / 80),
+    docs: v.docs / 9,
+    equip: EQUIP[v.equip][1],
+    exp: EXP[v.exp][1],
+  };
+  const pts = Object.fromEntries(Object.keys(W).map(k => [k, n[k] * W[k]]));
+  let score = Math.round(Object.values(pts).reduce((a, b) => a + b, 0));
+  const alerts = [];
+  if (v.docs < 7) { score = Math.min(score, 39); alerts.push('Bloqueio: menos de 7 dos 9 documentos válidos. Score limitado a 39.'); }
+  if (v.margem < 5) { score = Math.min(score, 44); alerts.push('Bloqueio: margem abaixo de 5%. Score limitado a 44.'); }
+  return { pts, score, alerts };
+}
+
+class Component extends DCLogic {
+  state = {
+    preset: 'cps', v: { ...PRESETS[0].v }, justSaved: false,
+    history: [
+      { date: '22/09/2026', lot: 'Tomada de Preços 008/2026 — Jundiaí', score: 81, who: 'V. Duque' },
+      { date: '15/09/2026', lot: 'Pregão 039/2026 — Sorocaba', score: 58, who: 'M. Andrade' },
+      { date: '03/09/2026', lot: 'Concorrência 027/2026 — Piracicaba', score: 34, who: 'V. Duque' },
+      { date: '27/08/2026', lot: 'Concorrência 019/2026 — São Paulo', score: 74, who: 'R. Lima' },
+    ],
+  };
+  set(k, val) { this.setState(s => ({ v: { ...s.v, [k]: val }, justSaved: false })); }
+  renderVals() {
+    const { v, preset } = this.state;
+    const { pts, score, alerts } = compute(v);
+    const P = k => pts[k].toFixed(1).replace('.', ',') + ' / ' + W[k];
+    const slider = (k, label, min, max, step, valueLabel, hint) => ({ label, min, max, step, value: v[k], valueLabel, hint, pts: P(k), onChange: e => this.set(k, Number(e.target.value)) });
+    const seg = (k, label, map) => ({ label, pts: P(k), options: Object.entries(map).map(([id, [l]]) => {
+      const on = v[k] === id;
+      return { label: l, pick: () => this.set(k, id), color: on ? '#ffffff' : '#94a3b8', bg: on ? '#2563eb' : 'transparent', weight: on ? 600 : 400 };
+    }) });
+    const lot = PRESETS.find(p => p.id === preset);
+    const c = CLS[clsOf(score)];
+    const LBL = { valor: 'Valor', distancia: 'Distância', margem: 'Margem', maoObra: 'Mão de obra', docs: 'Documentos', equip: 'Equipamentos', exp: 'Experiência' };
+    return {
+      presets: PRESETS.map(p => ({ label: p.label, load: () => this.setState({ preset: p.id, v: { ...p.v }, justSaved: false }),
+        color: p.id === preset ? '#ffffff' : '#cbd5e1', bg: p.id === preset ? 'rgba(37,99,235,0.18)' : 'transparent', border: p.id === preset ? 'rgba(59,130,246,0.5)' : 'rgba(255,255,255,0.1)' })),
+      lotTitle: lot ? lot.label : 'Análise manual',
+      sliders: [
+        slider('valor', 'Valor estimado', 0.1, 15, 0.1, brl(v.valor), 'Faixa ideal: R$ 0,3 mi a R$ 6 mi'),
+        slider('distancia', 'Distância da base', 0, 800, 5, v.distancia + ' km', 'Perde pontos até zerar em 600 km'),
+        slider('margem', 'Margem estimada', 0, 40, 1, v.margem + '%', '25% ou mais vale a nota cheia'),
+        slider('maoObra', 'Mão de obra disponível', 0, 100, 1, v.maoObra + '%', 'Equipes livres em relação às necessárias'),
+        slider('docs', 'Documentos válidos', 0, 9, 1, v.docs + ' de 9', 'Menos de 7 bloqueia a participação'),
+      ],
+      segments: [seg('equip', 'Equipamentos', EQUIP), seg('exp', 'Experiência anterior', EXP)],
+      score, cls: c, alerts: alerts.map(text => ({ text })),
+      breakdown: Object.keys(W).map(k => ({ label: LBL[k], pts: P(k), pct: Math.round(pts[k] / W[k] * 100) + '%' })),
+      recordLabel: this.state.justSaved ? 'Decisão registrada ✓' : 'Registrar decisão',
+      record: () => { if (this.state.justSaved) return; this.setState(s => ({ justSaved: true, history: [{ date: '28/09/2026', lot: lot ? lot.label : 'Análise manual', score, who: 'V. Duque' }, ...s.history] })); },
+      history: this.state.history.map(h => { const x = CLS[clsOf(h.score)]; return { ...h, label: x.label.split(' · ')[1], color: x.color, bg: x.bg }; }),
+      historyCount: this.state.history.length + ' análises',
+    };
+  }
+}
+</script>
+</body>
+</html>
