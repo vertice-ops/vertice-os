@@ -3,6 +3,12 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "dev": "npx --yes serve -l 3000 ."
+    "dev": "npx serve -l 3000 .",
+    "watch": "chokidar '**/*' -i '.git/**' -i 'node_modules/**' -i 'dist/**' -d 2000 -c './auto-push.sh'",
+    "start": "concurrently \"npm run dev\" \"npm run watch\""
+  },
+  "devDependencies": {
+    "chokidar-cli": "^3.0.0",
+    "concurrently": "^9.2.1"
   }
 }
